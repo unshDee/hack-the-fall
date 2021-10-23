@@ -1,14 +1,31 @@
 import streamlit as st
+import pandas as pd
+import numpy as np
+import streamlit as st
+from statsmodels.tsa.stattools import adfuller
+from pmdarima import auto_arima
+import warnings
+from statsmodels.tsa.arima_model import ARIMA
 
-def add(a,b):
-    c = a+b
-    return c
+def predict():
+    data = pd.read_csv("L:\hack-the-fall\data\chennai.csv", index_col='Date', parse_dates=True)
+    data = data.dropna()
 
-st.write('Enter two numbers to add')
+    def ad_test(dataset):
+        datatest = adfuller(dataset, autolag='AIC')
 
-num1 = st.number_input('insert number 1')
-num2 = st.number_input('insert number 2')
+    warnings.filterwarnings("ignore")
 
-if st.button('ADD'):
-    result = add(num1,num2)
-    st.write('The Addition of', num1, 'and', num2,'is equal to', result, '.')
+    train = data.iloc[:-1000]
+    test = data.iloc[-1000:]
+
+    model = ARIMA(train['POONDI'], order=(1, 1, 3))
+    model = model.fit()
+
+    pred = model.predict(typ='levels')
+    st.write(pred)
+
+
+if st.button('Predict'):
+    result = predict()
+      
