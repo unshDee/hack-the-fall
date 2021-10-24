@@ -7,12 +7,12 @@ import streamlit as st
 from statsmodels.tsa.stattools import adfuller
 from pmdarima import auto_arima
 import warnings
-from statsmodels.tsa.arima_model import ARIMA
+from statsmodels.tsa.arima.model import ARIMA
 
 data = 0
-# @cache
+@st.cache
 def pre_process():
-    data = pd.read_csv("L:\hack-the-fall\data\chennai.csv", index_col='Date', parse_dates=True)
+    data = pd.read_csv("data\chennai.csv", index_col='Date', parse_dates=True)
     data = data.dropna()
 
     def ad_test(dataset):
@@ -24,18 +24,17 @@ def pre_process():
     test = data.iloc[-1000:]
 
     return train,test
-    
 
 def predict_level(res_name,train):
     model = ARIMA(train[res_name], order=(1, 1, 3))
     model = model.fit()
     pred = model.predict(typ='levels')
-    
+
     # index_future_dates = pd.date_range(start='2020-03-12',end='2020-03-30')
 
     # pred=model.predict(start=len(data),end=len(data)+18,typ='levels').rename('ARIMA predictions')
     #pred=model.predict(start=0,end=len(data),typ='levels').rename('ARIMA predictions')
-  
+
     # pred=model.predict(typ='levels')
 
     # pred.index=index_future_dates
@@ -81,7 +80,7 @@ with dataset:
         st.text("Predictions will be present here")
         if st.button('Predict'):
             train,test = pre_process()
-            res='POONDI'
-            predict_level(res,train)
-            
-    
+            reservs=dist.columns
+            for res in reservs:
+                st.subheader(res)
+                predict_level(res,train)
