@@ -10,7 +10,7 @@ import warnings
 from statsmodels.tsa.arima.model import ARIMA
 
 # data = 0
-@st.cache
+# @st.cache
 def pre_process():
     data_set = pd.read_csv("data\chennai.csv", index_col='Date', parse_dates=True)
     data_set = data_set.dropna()
