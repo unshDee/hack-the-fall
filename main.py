@@ -11,8 +11,9 @@ from statsmodels.tsa.arima.model import ARIMA
 
 # data = 0
 # @st.cache
-def pre_process():
-    data_set = pd.read_csv("data\chennai.csv", index_col='Date', parse_dates=True)
+def pre_process(dist):
+    data_set = dist
+    #data_set = pd.read_csv(".\data\chennai.csv", index_col='Date', parse_dates=True)
     data_set = data_set.dropna()
 
     # def ad_test(dataset):
@@ -59,7 +60,7 @@ with dataset:
         data = pd.read_csv(file)
         st.write(data.head(5))
     else:
-        data = pd.read_csv("data/chennai.csv")
+        data = pd.read_csv("./data/chennai.csv")
         st.subheader("Distribution of water levels of reservoir")
 
     with st.sidebar:
@@ -79,8 +80,8 @@ with dataset:
         st.header("Prediction")
         st.text("Predictions will be present here")
         if st.button('Predict'):
-            train,test = pre_process()
-            reservs=['POONDI','CHOLAVARAM','REDHILLS','CHEMBARAMBAKKAM']
+            train,test = pre_process(dist)
+            reservs=dist.columns
             #reservs=dist.columns
             for res in reservs:
                 st.subheader(res)
