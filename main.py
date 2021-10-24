@@ -63,12 +63,12 @@ with dataset:
         st.subheader("Distribution of water levels of reservoir")
 
     with st.sidebar:
-        st.text("Select columns")
+        st.text("Visualize Data")
         options = []
         for column in data.columns:
             if is_numeric_dtype(data[column]):
                 options.append(column)
-        columns = st.multiselect("Columns", options)
+        columns = st.multiselect("Select columns", options)
         # st.write("You selected:", columns)
 
     dist = pd.DataFrame(data, columns=columns)
@@ -80,7 +80,8 @@ with dataset:
         st.text("Predictions will be present here")
         if st.button('Predict'):
             train,test = pre_process()
-            reservs=dist.columns
+            reservs=['POONDI','CHOLAVARAM','REDHILLS','CHEMBARAMBAKKAM']
+            #reservs=dist.columns
             for res in reservs:
                 st.subheader(res)
                 predict_level(res,train)
